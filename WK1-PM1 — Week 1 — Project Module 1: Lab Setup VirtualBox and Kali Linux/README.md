@@ -238,18 +238,22 @@ Week 1 requirements.
 Use this checklist to record whether the required setup has been
 completed.
 
--   [ ] 7-Zip installed, if required.
--   [ ] VirtualBox installed.
--   [ ] Custom NAT Network created.
--   [ ] NAT Network configured for `10.0.0.0/24`.
--   [ ] Kali Linux virtual machine imported.
--   [ ] Kali network adapter attached to the custom NAT Network.
--   [ ] Kali IPv4 address configured as `10.0.0.2/24`.
--   [ ] Kali Linux has internet access.
--   [ ] Shared Clipboard enabled.
--   [ ] Drag and Drop enabled.
--   [ ] Host `/downloads` folder configured as a shared folder.
--   [ ] Kali Linux setup snapshot created.
+-   ✅ 7-Zip installed, if required.
+-   ✅ VirtualBox installed.
+-   ✅ Custom NAT Network created.
+-   ✅ NAT Network configured for `10.0.0.0/24`.
+-   ✅ Kali Linux virtual machine imported.
+-   ✅ Kali network adapter attached to the custom NAT Network.
+-   ✅ Kali IPv4 address configured as `10.0.0.2`.
+-   ✅ Windows 11 IPv4 address configured as `10.0.0.11`.
+-   ✅ Windows 10 IPv4 address configured as `10.0.0.10`.
+-   ✅ Windows 7 IPv4 address configured as `10.0.0.7`.
+-   ✅ Kali Linux has internet access.
+-   ✅ Shared Clipboard enabled.
+-   ✅ Drag and Drop enabled.
+-   ✅ Host `/downloads` folder configured as a shared folder.
+-   ✅ Kali Linux setup snapshot created.
+-   Pending - Android VM installation
 
 ### Suggested verification commands
 
@@ -266,6 +270,8 @@ Test connectivity to an internet IP address:
 ``` bash
 ping -c 4 8.8.8.8
 ```
+![DNS Ping results](./screenshots/image.png)
+[DNS Ping results from Kali Linux VM](./screenshots/image.png) 
 
 Test DNS resolution:
 
