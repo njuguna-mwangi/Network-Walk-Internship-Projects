@@ -228,11 +228,11 @@ Week 1 requirements.
 
 <img src="./screenshots/windows10.png">
 
-[Windows 11 Screenshot indicating the static IP address](./screenshots/windows10.png)
+[Windows 10 Screenshot indicating the static IP address](./screenshots/windows10.png)
 
 <img src="./screenshots/Windows7.png">
 
-[Windows 11 Screenshot indicating the static IP address](./screenshots/Windows7.png)
+[Windows 7 Screenshot indicating the static IP address](./screenshots/Windows7.png)
 ## 7. Configuration and Verification Checklist
 
 Use this checklist to record whether the required setup has been
