@@ -252,7 +252,7 @@ This tool is used to view DNS records of the web in question. For one view a spe
 ![](./Screenshots/nslookup.png)
 The screenshot shows results including a non-authoritative answers meaning they are cached responses from a DNS server. However, more information can be gathered using **_dig_** which shows more information on the specific record required. One can also mask their own queries by specifying the server you want to query using the **@** symbol. An example, displaying **MX** records making my request appear to be originating from the server **1.1.1.1** would look like 
 ```bash 
-dig @1.1.1.1 networkwalks,com MX
+dig @1.1.1.1 networkwalks.com MX
 ```
 The results are as shown below with the server section and the results section highlighted respectively.
 ![dig responses on networkwalks.com](./Screenshots/dig.png)
@@ -305,7 +305,82 @@ dnsrecon -d networkwalks.com
 The response is summarised using the screenshot below.
 ![](./Screenshots/dnsrecon.png)
 [A screenshot showing the response from dnsrecon tool against networkwalks.com](./Screenshots/dnsrecon.png)
+#### 7. The Harvester
+This is an information gathering tool that allows us 'harvest' credentials from different platforms such as **LinkedIn, Baidu etc.**. The user details are fetched from **baidu** for an organization **microsoft**. The command used in this case is 
+```bash 
+theHarvester -d microsoft.com -l 1000 -b baidu
+```
 
+_-d_ specifies the domain
+
+
+_-l_ specifies the limit 
+
+
+_-b_ specifies the source of the records
+
+The results of the commands are as shown below
+![](./Screenshots/theHarvester.png)
+[The Harvester showing the results of enumerating microsoft](./Screenshots/theHarvester.png)
+
+It is clear that there is no identifiable information on any microsoft user in baidu platform.
+>Note <br>
+theHarvester requires API keys to operate. It might not worl as expected as the keys are not available.
+#### 8. Google Hacking Database
+The google hacking database is a collection of queries compiled to make google return the response that the user requires from an actual google search.Some information that might be disclosed is:
+- camera feeds
+- open directories
+- login pages
+- config files
+- confidential documents among others.
+
+Some of the queries used include:
+- intitle
+- inurl
+- site
+- intext among others
+In this activity, we were required to find vulnerable cameras and downloadable mathematics books and fill them in the tables below.
+##### GHDB Available camera links
+|No.|Link|Relevant Command| Username/Password|
+|---|---|---|---|
+|1.|http://99.114.240.169:8080|intitle:"Webcam" inurl:WebCam.htm|None|
+|2.|http://202.153.140.18:8106/|intitle:"IP CAMERA" "User Login" "User Name" "Password" "Preview Stream"| Not Available|
+|3.|http://109.233.191.130:8080/|inurl:mobile.html intitle:webcamXP|N.A|
+|4.|http://109.233.191.130:8080/mobile.html|inurl:mobile.html intitle:webcamXP|N/A|
+|5.|http://75.149.26.30:1024/mobile.html|inurl:mobile.html intitle:webcamXP|None|
+|6.|http://insecam.org/en/bytype/WebcamXP/?page=5|inurl:mobile.html intitle:webcamXP|None|
+|7.|http://109.233.191.130:8080/multi.html|inurl:mobile.html intitle:webcamXP|None|
+|8.|http://75.149.26.30:1024/|inurl:mobile.html intitle:webcamXP|None|
+|9.|http://72.199.200.5:8080/|intitle:"webcamxp" "Flash JPEG Stream"|None|
+|10.|http://139.64.168.120:8080/|intitle:"webcamxp" "Flash JPEG Stream"|None|
+
+##### GHDB Links for downloadable links
+|No.|Link|Relevant Command| Username/Password|
+|---|---|---|---|
+|1.|http://www.issp.ac.ru/ebooks/books/open/10070147.pdf|intitle: index of "parent directory" mathematics pdf|None|
+|2.|https://www.chem.uci.edu/~unicorn/249/pdfs/|intitle: index of "parent directory" mathematics pdf|None|
+|3.|http://erewhon.superkuh.com/library/Math/|intitle: index of "parent directory" mathematics pdf|None|
+|1
+4.|https://netlib.org/math/docpdf/|intitle: index of "parent directory" mathematics pdf|None|
+|5.|https://www.jsoftware.com/books/pdf/|intitle: index of "parent directory" mathematics pdf|None|
+|6.|https://mathflix.luc.edu/pdfs/Algebra/|intitle: index of "parent directory" mathematics pdf|None|
+|7.|https://www.aetkin.com/files/Math%20150%20Calculus%20I/Advanced%20Calculus%20Textbook/|intitle: index of "parent directory" mathematics pdf|None|
+|8.|https://lira.epac.to/DOCS-TECH/Math/Engineering%20and%20Applied/|intitle: index of "parent directory" mathematics pdf|None|
+|9.|https://math.umd.edu/~immortal/206tutorial/|intitle: index of "parent directory" mathematics pdf|None|
+|10.|https://englishbooks.com.tw/primary/|intitle: index of "parent directory" mathematics pdf|None|
+#### 9. Maltego
+This is an opensource tool used to link information from different sources.It helps investigators connect unrelated datapoints such as:
+- Domain names
+- IP Address
+- Email Addresss among others.
+
+
+In this case,Maltego was to extract email address from domain name *networkwalks.com* and the results were as shown below.
+![](./Screenshots/maltego.png)
+[Maltego stransforming the domain and extracting emails connected to the domain](./Screenshots/maltego.png)
+
+
+At any point, a transformation has to be run against an entity which in this case, it is the **domain**. 
 ### NETWORK SCANNING
 This activity is performed to map the infrastructure of the target. There might be two angles when scanning the system which are:
 - The attacker has compromised the system and is scanning the local subnet 
@@ -333,3 +408,27 @@ However, it should be noted that **10.0.0.2** is the Kali Linux machine that is 
 It is also expected that 10.0.0.11 would be online but due to some reasons, my windows 11 VM could not fire up during the time of the submission of the assignment.
 
 ## Risk Analysis and Impact
+Based on the information gathered , the risks associated with the information gathered can be rated using the table below. 
+
+|S/No|Risk|Evidence|Potential Impact|Risk Level|
+|---|---|---|---|---|
+|1.|Web Information Exposure|Identified wordpress version and plugins|Attackers might craft exploits for the specific version|Medium|
+|2.|Identifiable Server IP address|As Mapped by _nslookup_|provides information about networking information giving attackers starting point to scan the network|low|
+|3.|HTTP headers information|identified by Curl|assists in technoology fingerprinting|low|
+|4.|WAF Identification|as Identified by wafw00f| WAF bypass payloads my be crafted as the version has been identified|low|
+|5.|DNS information available|Identified by **DNSRecon, dig and nslookup**|Helps build a broder network map|medium|
+|6.|Multiple Live hosts|Identified by nmap/zenmap|unauthorised devices might be inside the network|medium|
+
+## Recommendations
+- periodically review public information available to the users
+- Always keep the CMS updated with its plugins 
+- Always update the WAF and periodically confirm if its up and running 
+- Review HTTP headers
+- Review network devices even if they are whitelisted
+- Always perform security testing on your infrastructure with permission.
+
+## Conclusion
+This penetration testing report covers the phases information gathering and scanning. In the footprinting activity, there was a lot of identifiable information in the public that made an attacker understand the target without interacting with it directly. The Google hacking database, Maltego and the harvester allowed us to collect as many Personal Identifying information as possible so that a juicy target can singled out for further attacks.
+In the network scanning section, the live hosts and the network architecture was identified which helped us detect which other targets are connected to the network.
+This activity show that information gathering is a crucial phase in any security test as one can only attack what they understand. The technical findings are well documented from the guidelines provided earlier as a good cybersecurity report should clearly document the findings, steps to reproduce, findings , risks ratings and ways to mitigate the risks.
+It should be noted that any form of security engagement should be performed in an authorised environment where one has explicit permission or the one they own.
