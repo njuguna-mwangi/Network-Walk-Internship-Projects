@@ -9,7 +9,7 @@ W2-PM-FINAL | CYBERSECURITY | NETWORKWALKS
 ![Date](https://img.shields.io/badge/Date-10/11/2026-yellow) <br>
 ![Date](https://img.shields.io/badge/Permission_Granted-Yes-green) 
 
-| **Client/Target|
+| **Client/Target**|
 |---|
 | Networkwalks (With Permission)|
 | Lab Network (Owned By Me) |
