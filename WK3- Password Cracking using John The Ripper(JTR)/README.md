@@ -24,3 +24,29 @@ This project focuses on using John the Ripper to recover passwords from an encry
 Through this, the project allows us acquire practical skills in password recovery ranging from hash extraction to use of password tool in password cracking. This lab activity also highlights the importance of a complex password in protecting confidential data.
 
 # Technical Summary
+This project involved using password auditing tools:- John the ripper herein referred to as **john**. Although there are other tools such as **hashcat** that can be used to recover the password, our focus in this lab activity is with john. The technical implementation of how password assessment and recovery worked followed the following steps.
+
+1. **Tool installation:** By default, the tool is already installed in Kali Linux and configured to run with the command **john** directly in the terminal.
+
+
+2. Hash extraction from the pdf file
+
+3. Hash preparation and storage in a hash.txt file
+
+4. Hash importation to john
+
+5. Password cracking where john runs the file hash against a wordlist and recovers the password.
+
+6. Password verification where after successful cracking of the password, the password is tried to open the password protected document.
+
+# Lab Objectives
+The primary objectives of this lab activity was to equip the student with hands on skills to assess passwords using a password auditing and assessment tool.Other objectives include:
+
+- generating file hashes from any file
+- importing the file  hash into password auditing tool
+- loading a password wordlist into the password auditing tool
+
+# Tools and resources used
+The tool required in this activity is john. It performs the activities of generating the file hash and running a password crack against the generated hash file.
+
+# Methodology
