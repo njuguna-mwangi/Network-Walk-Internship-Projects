@@ -50,3 +50,105 @@ The primary objectives of this lab activity was to equip the student with hands 
 The tool required in this activity is john. It performs the activities of generating the file hash and running a password crack against the generated hash file.
 
 # Methodology
+The activities in this lab followed a structured approach outlined below. Each activity outlined followed one another sequentially and no single step was to be executed before another one. 
+
+### installation of John the Ripper
+
+John the ripper, is a free and open source password auditing tool by default installed in Kali Linux. In this case, this step is skipped as it is automatically installed. This can be verified using the command below in the terminal.
+```bash 
+john
+```
+If john is installed, the command returns the response as indicated in the screenshot below.
+![A Screenshot showing john the ripper installed in parrot sec](./Screenshots/1.png)
+[A Screenshot showing john the ripper installed in parrot sec](./Screenshots/1.png)
+
+### Pdf hash extraction
+The pdf file hash was uploaded into an online hash generation platform provided by **Networkwalks** for this lab exercise. However, the hash could be extracted right from the terminal using the command 
+```bash 
+pdf2john <filename>
+```
+where the filename is the name of the file we want to crack the hash on.
+In this case, the pdf files are three which are 
+- [pdf 1](./PDFs/My%20Locked%20PDF1.pdf)
+- [pdf 2](./PDFs/My%20Locked%20PDF2.pdf)
+- [pdf 3](./PDFs/My%20Locked%20PDF3.pdf)
+
+The hashes generated are as shown in the screenshots below.
+
+**NOTE:** The screenshots indicate how the hashes are generated and stored in a file with a name corresponding to the pdf.
+The hashes are generated using a command-line utility called **pdf2john**
+![A screenshot showing hash generation using john](./Screenshots/2.png)
+[A screenshot showing hash generation using john](./Screenshots/2.png)
+
+The other hashes were generated and stored in the **Hashes** directory as indicated below.
+![A screenshot showing the files inside the Hashes Directory](./Screenshots/3.png)
+[A screenshot showing the files inside the Hashes Directory](./Screenshots/3.png)
+
+The hashes can be displayed on the screen using a one liner bash script 
+```bash 
+for file in *; do echo "====$file====="; cat $file;done
+```
+The script gives the output as shown below.
+![The contents of the hash files](./Screenshots/4.png)
+[A screenshot showing the contents of the hash files](./Screenshots/4.png)
+
+### hash importation
+The hashes were imported into john ready for password cracking. The hashes were imported one after the other.
+First, the format of the hash is determined using the command ```john --list=formats | grep -i pdf ``` where the pdf is used to filter the results out as the main file we are working on is a pdf. The response received is 
+```bash 
+john --list=formats | grep -i pdf
+416 formatsPBKDF2-HMAC-SHA256, PBKDF2-HMAC-SHA512, PDF, PEM, pfx, pgpdisk, pgpsda, 
+ (149 dynamic formats shown as just "dynamic_n" here)
+ ```
+
+ The screenshot below shows a single file hash1.txt imported into john using the command below.
+```bash 
+john --format=PDF hash1.txt 
+```
+![](./Screenshots/5.png)
+The command above is repeated for all the other hashes.
+
+### Password cracking
+After the hash is loaded to john, a wordlist containing passwords is loaded so that john can compare the hash with a password in the file. For this activity, we will use the default **rockyou.txt** present in Kali Linux by default.
+![A screenshot showing password cracking process after loading the wordlist](./Screenshots/6.png)
+
+### Password verification
+This activity is carried out after the password has been successfully retrieved. The content inside the documents can be revealed only after the password is correct.
+
+
+# Findings
+it is noted that the password cracking process was done fast  a clear indication that the password complexity was weak for the first document. John was able to get the password in under 10 seconds. The password retrieved was ```good-luck``` as indicated in the screenshot below.
+![A](./Screenshots/7.png)
+[A Screenshot indicating how password recovering is done using john](./Screenshots/7.png)
+
+Repeating the same process with hash2.txt and hash3.txt, the passwords were retrieved as ```password1``` and ```1qaz2wsx``` respectively.
+The screenshot below combines the password cracking process as shown by john.
+![](./Screenshots/8.png)
+[A screenshot showing successful password recovery activity using john](./Screenshots/8.png)
+
+# Results
+The password recovery process went on smoothly and the passwords were tested against the file corresponding to the hash being cracked at a time. This activity showed that the passwords retrieved worked and the contents of the pdfs were successfully read .
+![A screenshot showing the contents in pdf1](./Screenshots/9.png)
+
+[A screenshot showing the contents in pdf1](./Screenshots/9.png)
+![A screenshot showing the contents in pdf2](./Screenshots/10.png)
+
+[A screenshot showing the contents in pdf2](./Screenshots/10.png)
+![A screenshot showing the contents in pdf3](./Screenshots/11.png)
+
+
+[A screenshot showing the contents in pdf3](./Screenshots/11.png)
+
+From the results above, it is quite evident that the passwords were successfully recovered using john the ripper.
+
+# Recommendation
+Based on the password cracking activity, it was evident that the passwords were easily retrieved using john. I would therefore recommend the following to help protect sensitive information.
+
+- use a complex password when protecting document by a password.
+- avoid predictable passwords even if they are complex
+- conduct regular security audits on the passwords policy in the organization
+
+In general, the organization should adopt a strong password policy and enforce it via Cyber security trainings workshops or crash courses. Train the employees on the benefits of proper passwords to the institution.
+
+# Conclusion
+This lab activity provided useful insights on how password cracking is done using john the ripper. Through this activity,  the passwords were extracted and the documents were accessed. This serves as a critical skill which every cybersecurity professional should posses and would come handy during a security assessment or passwords recovery activities.
