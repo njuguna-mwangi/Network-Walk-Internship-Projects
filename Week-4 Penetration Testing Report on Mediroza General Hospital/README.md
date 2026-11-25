@@ -1,16 +1,27 @@
 <!-- Penetration Testing Report -->
-![Author](https://img.shields.io/badge/Pentester-Samuel_Mwangi-red) <br>
+![Scope](https://img.shields.io/badge/Pentester-Njuguna_Mwangi-red) <br>
 ![Program](https://img.shields.io/badge/Program-NetworkWalks%20Internship-blue) <br>
 ![Batch](https://img.shields.io/badge/Batch-B084-orange) <br>
-![Date](https://img.shields.io/badge/Date-24/11/2026-yellow) <br>
+![Date](https://img.shields.io/badge/Date-25/11/2026-yellow) <br>
 ![Permission](https://img.shields.io/badge/Permission_Granted-Yes-green) <br>
-![Client](https://img.shields.io/badge/Client_Mediroza_General_Hospital-Yes-cyan) <br>
 
 
-# Meduroza General Hospital
-## Penetration Testing Report
+# Project Details
+|Project Type|Penetration Testing & Vulnerability Assessment|
+|---|---|
+|Client Name|Mediroza General Hospital|
+|Target|https://medirozahospital.com|
+|Scope|Full black-box penetration test. Identify vulnerabilities, exploit them to demonstrate real impact, and document all findings in a
+professional report.|
+|RoE|Testing limited to the target domain only. No social engineering. No denial of service. No testing outside agreed scope|
+|Authorization|The client has provided written authorisation to conduct security testing on their web infrastructure.|
+|Timeline|5 days.|
+|Pentester|Njuguna Mwangi|
+|Date| 25/11/2026|
 
-# Executive Summary
+---
+
+# 1. Executive Summary
 A black-box penetration testing and vulnerability assessment was conducted against Mediroza General Hospital's web infrastructure, targeting https://medirozahospital.com, as part of the NetworkWalks Week 4 Penetration Testing Project (Batch B084).
 
 The engagement was designed to evaluate the security of the hospital's web application by identifying potential vulnerabilities, assessing their impact, and demonstrating the risks associated with unauthorized access to sensitive information. The assessment was conducted over a five-day period under written authorization, with testing restricted to the agreed target domain.
@@ -39,7 +50,7 @@ The engagement was scheduled to run for five days and was conducted under writte
 
 This report presents the assessment objectives, identified security weaknesses, exploitation evidence, potential business impact, and recommended remediation measures. Its purpose is to provide a clear understanding of the security risks identified during the engagement and support improvements to the confidentiality and security of the hospital's information systems.
 
-# Technicla Summary
+# 3. Technical Summary
 
 The Mediroza General Hospital penetration testing engagement involved a black-box assessment of the target web application hosted at **https://medirozahospital.com**. The assessment was designed to evaluate the application's security posture by examining exposed entry points, authentication mechanisms, input-handling processes, file protection mechanisms, and potential information disclosure vulnerabilities.
 
@@ -64,3 +75,58 @@ The final phase involved consolidating the technical findings into a professiona
 The engagement was conducted over five days under written authorization, with testing restricted to the specified target domain. Social engineering, denial-of-service attacks, and testing outside the agreed scope were prohibited.
 
 The technical findings and exploitation evidence should be used to establish the final security assessment and determine the level of risk posed to the hospital's web infrastructure and sensitive information.
+
+
+# 4. Lab Objectives
+
+The primary objective of this penetration testing lab was to assess the security of Mediroza General Hospital's web application through an authorized black-box penetration test. The exercise aimed to identify security weaknesses, demonstrate their potential impact, and evaluate the exposure of sensitive hospital information.
+
+The specific objectives were:
+
+- **Conduct Reconnaissance:** Gather information about the target web application and identify exposed entry points and potential attack surfaces.
+
+-  **Identify Application Vulnerabilities:** Examine authentication mechanisms, user-input handling, and other application components to identify security weaknesses.
+
+-  **Gain Initial Access:** Exploit identified weaknesses to access restricted areas of the application and retrieve three confidential patient laboratory reports.
+
+-  **Analyse PDF Encryption:** Examine the encryption mechanisms protecting the retrieved PDF documents and attempt to recover their contents using appropriate tools and wordlists.
+
+-  **Investigate Sensitive Data Exposure:** Analyse retrieved documents and their properties to identify further server-side information exposure.
+
+-  **Identify Confidential Organizational Information:** Locate and document hospital employee salary information and shareholder details exposed through the identified server-side weakness.
+
+-  **Document Security Findings:** Provide technical evidence of identified vulnerabilities and successful exploitation, including relevant screenshots and recovered information.
+
+-  **Assess Security Risks:** Assign appropriate severity ratings (Critical, High, Medium, or Low) based on the identified vulnerabilities and their potential impact.
+
+-  **Recommend Remediation Measures:** Provide actionable security recommendations to address identified weaknesses and improve the protection of sensitive hospital information.
+
+-  **Maintain Testing Scope and Authorization:** Conduct all activities within the explicitly authorized target domain while adhering to the project restrictions and ethical penetration testing principles.
+
+# 5. Tools and Technologies Used
+
+The penetration testing engagement involved the use of cybersecurity tools and technologies to support reconnaissance, vulnerability assessment, exploitation, document analysis, and security reporting.
+
+The tools used or selected for the assessment included:
+
+| Tool | Purpose |
+|---|---|
+|Nikto|A web application vulnerability scanner|
+|Maltego|OSINT tool for relationships graphing|
+| Nmap/rustscan | Network reconnaissance, port scanning, and service enumeration. |
+| WhatWeb | Web technology identification and fingerprinting. |
+| feroxbuster | Web directory and file enumeration. |
+| Burp Suite | Intercepting HTTP requests, analysing application responses, and testing web application vulnerabilities. |
+| cURL | Sending HTTP requests and examining server responses. |
+| Browser Developer Tools | Inspecting application behaviour, cookies, requests, and responses. |
+| Hashcat & John the Ripper | Password recovery and encryption analysis where supported. |
+| PDF analysis utilities | Examining PDF document properties, encryption, and metadata. |
+| ExifTool | Extracting metadata from retrieved documents and other files. |
+| Linux Terminal | Executing assessment commands, managing tools, and analysing results. |
+| Git / GitHub | Maintaining technical documentation and organizing project evidence. |
+
+**Operating Environment**
+
+- Operating System: Linux-based penetration testing environment.
+
+The selected tools supported the different assessment activities, from initial reconnaissance and web application testing to encrypted document analysis and preparation of the final security report.
