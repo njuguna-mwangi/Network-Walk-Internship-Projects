@@ -11,8 +11,7 @@
 |---|---|
 |Client Name|Mediroza General Hospital|
 |Target|https://medirozahospital.com|
-|Scope|Full black-box penetration test. Identify vulnerabilities, exploit them to demonstrate real impact, and document all findings in a
-professional report.|
+|Scope|Full black-box penetration test. Identify vulnerabilities, exploit them to demonstrate real impact, and document all findings in a professional report.|
 |RoE|Testing limited to the target domain only. No social engineering. No denial of service. No testing outside agreed scope|
 |Authorization|The client has provided written authorisation to conduct security testing on their web infrastructure.|
 |Timeline|5 days.|
@@ -32,7 +31,6 @@ The engagement highlights the importance of protecting sensitive healthcare info
 
 The assessment findings, supporting evidence, risk ratings, and recommended remediation measures are documented in this report to help Mediroza General Hospital understand its security weaknesses and strengthen the protection of its web infrastructure and sensitive information.
 
-# Introduction
 # 2. Introduction
 
 Mediroza General Hospital's web infrastructure was selected for a penetration testing and vulnerability assessment exercise as part of the NetworkWalks Week 4 Practical Penetration Testing Project (Batch B083). The engagement involved conducting a black-box security assessment of the hospital's web application, targeting **https://medirozahospital.com**.
