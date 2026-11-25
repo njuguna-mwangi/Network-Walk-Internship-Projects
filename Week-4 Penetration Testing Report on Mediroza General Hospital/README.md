@@ -130,3 +130,52 @@ The tools used or selected for the assessment included:
 - Operating System: Linux-based penetration testing environment.
 
 The selected tools supported the different assessment activities, from initial reconnaissance and web application testing to encrypted document analysis and preparation of the final security report.
+
+# 6. Methodology
+
+The assessment followed a structured black-box penetration testing methodology designed to identify, validate, and document security vulnerabilities within Mediroza General Hospital's web application.
+
+The testing process was divided into the following phases:
+
+### 6.1 Reconnaissance
+
+Initial reconnaissance involved gathering information about the target domain, identifying exposed entry points, and understanding the publicly accessible web application. The objective was to establish the application's attack surface and identify potential areas for further investigation.
+
+### 6.2 Enumeration and Attack Surface Identification
+
+The identified entry points were examined to understand available resources, application functionality, authentication mechanisms, and input-handling behaviour. This phase helped identify potentially vulnerable components and restricted areas requiring further security assessment.
+
+### 6.3 Vulnerability Identification and Initial Access
+
+The application was assessed for weaknesses in authentication and user-input handling. Identified vulnerabilities were investigated through controlled testing to determine whether they could provide unauthorized access to restricted resources. The primary objective was to retrieve the three confidential patient laboratory reports specified in the project brief.
+
+### 6.4 PDF Encryption Analysis and Password Recovery
+
+The three retrieved PDF documents were examined to identify their encryption properties and protection mechanisms. Appropriate analysis and password-recovery techniques were considered for each document, with different approaches applied where necessary.
+
+### 6.5 Data Analysis and Information Disclosure Investigation
+
+Following document recovery, the retrieved files were analysed beyond their visible contents. Their properties and metadata were examined for additional information that could reveal further exposure on the client's server. This investigation focused on identifying hospital employee salary information and shareholder details.
+
+### 6.6 Exploitation Validation and Evidence Collection
+
+Potential vulnerabilities were evaluated to establish their security implications. Relevant evidence, including screenshots, application responses, retrieved documents, and technical observations, was collected to support the assessment findings and demonstrate the impact of identified weaknesses.
+
+### 6.7 Risk Assessment
+
+Each confirmed vulnerability was evaluated according to its potential impact and associated security risk. Findings were classified using the following severity levels:
+
+- Critical
+- High
+- Medium
+- Low
+
+### 6.8 Reporting and Recommendations
+
+The final phase involved consolidating the assessment results into a professional penetration testing report. Each finding was documented with its description, supporting evidence, potential business impact, severity rating, and recommended remediation measures.
+
+### 6.9 Rules of Engagement
+
+All testing activities were conducted within the authorized scope of the engagement. Testing was restricted to the specified target domain. Social engineering, denial-of-service attacks, and testing outside the agreed scope were prohibited.
+
+The methodology followed the four project milestones established by NetworkWalks: Initial Access, Data Extraction, Attack (Cracking), and Penetration Testing Report.
