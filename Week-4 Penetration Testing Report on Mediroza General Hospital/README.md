@@ -138,14 +138,45 @@ The testing process was divided into the following phases:
 ### 6.1 Reconnaissance
 
 Initial reconnaissance involved gathering information about the target domain, identifying exposed entry points, and understanding the publicly accessible web application. The objective was to establish the application's attack surface and identify potential areas for further investigation.
-
 ### 6.2 Enumeration and Attack Surface Identification
 
-The identified entry points were examined to understand available resources, application functionality, authentication mechanisms, and input-handling behaviour. This phase helped identify potentially vulnerable components and restricted areas requiring further security assessment.
+The identified entry points were examined to understand available resources, application functionality, authentication mechanisms, and input-handling behaviour. This phase helped identify potentially vulnerable components and restricted areas requiring further security assessment.Among the activities done in this phase were:
+
+- ### IP address identification
+    The IP address of the server hosting https://medirozahospital was mapped to 199.188.201.16 using the ping utility.
+    ![A screenshot showing a ping to the target](./Screenshots/1.png)
+    [A screenshot showing a ping to the target](./Screenshots/1.png)
+- #### subdomain enumeration
+    This allowed me to map out the attack surface and identify different subdomains under the main domains.The subdomains were discovered using `dnsdumpster` as shown below.
+    ![Subdomains enumeration using DNS Dumpster](./Screenshots/2.png)
+    [Subdomains enumeration using DNS Dumpster](./Screenshots/2.png)
+
+    Some of the subdomains identified are as shown below from the **A** records.
+    - heartpatient.medirozahospital.com	
+    - www.medirozahospital.com
+- ### WAF Identification
+    Web application firewall slows down and blocks attacks. It is therefore essential to understand whether the target is behind a firewall so that any attacks can be properly planned before hand.
+    [Screenshot showing the target behind a Firewall](./Screenshots/3.png)
+- ### nmap ports and services enumeration
+    nmap allows us to detect open ports and the service versions running on them so that it would be easiy to find vulnerabilities and weaponize them.
+    In this case, the command `sudo nmap -sS -sV 199.188.201.16 -vv`. The results are shown in the screenshots below.
+    ![A screenshot showing Nmap results Part 1](./Screenshots/4.png)
+    [A screenshot showing Nmap results Part 1](./Screenshots/4.png)
+    ![A screenshot showing Nmap results Part 2](./Screenshots/5.png)
+    [A screenshot showing Nmap results Part 2](./Screenshots/5.png)
+- ### directories enumeration using feroxburster
+    Directory enumeration is done to determine hidden directories that are not visible to normal users. the discovered directories are:
+    - /old
+    - /patient
+    - /staff
+
+    The command used to enumerate the directories is `feroxbuster -u http:$host -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-lowercase-2.3-medium.txt`. The results are as shown in the screenshot below.
+   ![A screenshot showing forexburster results on the target](./Screenshots/6.png)
+    [A screenshot showing forexburster results on the target](./Screenshots/6.png)
 
 ### 6.3 Vulnerability Identification and Initial Access
 
-The application was assessed for weaknesses in authentication and user-input handling. Identified vulnerabilities were investigated through controlled testing to determine whether they could provide unauthorized access to restricted resources. The primary objective was to retrieve the three confidential patient laboratory reports specified in the project brief.
+The application was assessed for weaknesses in authentication and user-input handling. Identified vulnerabilities were investigated through controlled testing to determine whether they could provide unauthorized access to restricted resources. The primary objective was to retrieve the three confidential patient laboratory reports specified in the project brief.The vulnerability identification phase was done in different steps one of them. They include:
 
 ### 6.4 PDF Encryption Analysis and Password Recovery
 
@@ -177,3 +208,179 @@ The final phase involved consolidating the assessment results into a professiona
 All testing activities were conducted within the authorized scope of the engagement. Testing was restricted to the specified target domain. Social engineering, denial-of-service attacks, and testing outside the agreed scope were prohibited.
 
 The methodology followed the four project milestones established by NetworkWalks: Initial Access, Data Extraction, Attack (Cracking), and Penetration Testing Report.
+
+# 7. Findings and Proof of Exploitation
+
+## F-01: Directory Listing Enabled
+
+**Description:**
+
+Directory listing was identified on the target web application. This misconfiguration allowed directory contents to be displayed through the web server, potentially exposing files and resources that were not intended for public access.
+
+**Security Impact:**
+
+An attacker could enumerate exposed files and directories, discover application resources, identify potentially sensitive information, and obtain information useful for further attacks.However, in this case, the dump of the database was found in the path `/old` where the staff and the shareholders details were exposed. The screenshot below shows a redacted copy of the data.
+![A screenshot of staff details from the database](./Screenshots/7.png)
+[A screenshot of staff details from the database](./Screenshots/7.png)
+
+![A screenshot of shareholders details from the database](./Screenshots/7.png)
+[A screenshot of shareholders details from the database](./Screenshots/7.png)
+
+**Severity:** high.
+
+**Recommendation:**
+
+- Disable directory indexing on the web server.
+- Restrict access to sensitive directories.
+- Apply appropriate file and directory permissions.
+- Ensure confidential files are stored outside publicly accessible web directories.
+
+## F-02: SQL Injection (SQLi)
+
+**Description:**
+
+An SQL injection vulnerability was identified in the web application. The weakness allowed manipulated SQL input to interfere with the application's database queries.The SQLI was present in the patients portal where the username `admin'-- -` and any password allowed a total check of the corrent details.The patient portal became available where patients reports were visible since I had logged in as an `admin`.
+
+**Security Impact:**
+
+Successful exploitation could compromise authentication controls, expose sensitive database records, and provide unauthorized access to privileged application functionality. Depending on the database privileges, the vulnerability could also expose additional organizational information.
+
+**Severity:** Critical.
+
+**Recommendation:**
+
+- Implement parameterized SQL queries and prepared statements.
+- Avoid constructing database queries through direct concatenation of user input.
+- Apply strict server-side input validation.
+- Enforce least-privilege database permissions.
+- Use secure password hashing mechanisms.
+- Implement appropriate database and application monitoring.
+
+**Evidence:**
+![A screenshot showing critical files being accessed](./Screenshots/9.png)
+[A screenshot showing critical files being accessed](./Screenshots/9.png)
+
+---
+
+## F-03: Exposure of Confidential Patient Laboratory Reports
+
+**Description:**
+
+During the assessment, three confidential patient laboratory reports in PDF format were identified and accessed through the web application.
+
+The exposure demonstrated inadequate protection of sensitive medical documents and raised concerns regarding the application's access control and document confidentiality mechanisms.
+
+**Security Impact:**
+
+Unauthorized access to patient laboratory reports could result in the disclosure of sensitive medical information, privacy violations, reputational damage, and potential regulatory consequences.
+
+**Severity:** High .
+
+**Recommendation:**
+
+- Enforce server-side authorization checks before serving patient documents.
+- Store confidential reports outside publicly accessible directories.
+- Implement secure, authenticated document delivery.
+- Apply access controls based on user roles and permissions.
+- Monitor and audit access to sensitive medical records.
+
+**Evidence:**
+
+![A screenshot showing downloaded pdf documents](./Screenshots/10.png)
+[A screenshot showing downloaded pdf documents](./Screenshots/10.png)
+
+---
+
+## F-04: Weak Password Protection on PDF Reports
+
+**Description:**
+
+The retrieved PDF laboratory reports were protected using weak passwords. Password recovery analysis demonstrated that the document protection could be defeated, allowing access to the contents of the reports.
+
+This weakness reduced the effectiveness of the encryption controls intended to protect confidential patient information.
+
+**Security Impact:**
+
+Weak document passwords increase the likelihood of unauthorized document access, particularly when files are exposed or obtained by unauthorized individuals.
+
+**Severity:** High.
+
+**Recommendation:**
+
+- Enforce strong, randomly generated document passwords.
+- Use modern PDF encryption standards.
+- Avoid predictable or reusable passwords.
+- Securely distribute and manage document passwords.
+- Prioritize server-side access controls instead of relying solely on PDF password protection.
+
+**Evidence:**
+![](./Screenshots/11.png)
+![](./Screenshots/12.png)
+![](./Screenshots/13.png)
+
+# 7. Findings and Proof of Exploitation
+
+| ID | Vulnerability | Description / Evidence | Severity |
+|---|---|---|---|
+| F-01 | Directory Listing Enabled | The `/old` directory exposed a database dump containing staff and shareholder information. | **CRITICAL** |
+| F-02 | SQL Injection (Authentication Bypass) | SQL injection using `admin'-- -` bypassed authentication and granted unauthorized administrative access to the patient portal. | **CRITICAL** |
+| F-03 | Exposure of Confidential Patient Laboratory Reports | Three confidential patient laboratory reports were retrieved without adequate access controls, exposing sensitive medical information. | **CRITICAL** |
+| F-04 | Weak Password Protection on PDF Reports | Password recovery analysis demonstrated that passwords protecting the retrieved PDF reports could be recovered, exposing their contents. | **HIGH** |
+
+## 7.1 Risk Summary
+
+| Severity | Number of Findings |
+|---|---:|
+| Critical | 3 |
+| High | 1 |
+| Medium | 0 |
+| Low | 0 |
+| Informational | 0 |
+| **Total** | **4** |
+
+**Overall Risk Rating: CRITICAL**
+
+The assessment identified significant weaknesses in authentication, access control, directory configuration, and confidential information protection. Immediate remediation is recommended, particularly for the SQL injection vulnerability and unauthorized exposure of organizational and patient information.
+
+## 7.2 Remediation Priority
+
+| Priority | Finding | Recommended Action |
+|---|---|---|
+| Immediate | F-01 | Disable directory listing and remove exposed database dumps. |
+| Immediate | F-02 | Fix SQL injection using parameterized queries and prepared statements. |
+| Immediate | F-03 | Restrict access to patient reports through server-side authorization. |
+| High | F-04 | Enforce strong document encryption and randomly generated passwords. |
+## 8. Recommendations
+
+Based on the findings identified during the penetration testing assessment, the following recommendations are proposed to strengthen the security posture of the web application and protect sensitive organizational and patient information.
+
+1. **Implement Secure Database Interactions:** Eliminate SQL injection vulnerabilities by using parameterized queries, prepared statements, and strict server-side input validation. Avoid dynamically constructing SQL queries using untrusted user input.
+
+2. **Strengthen Access Control Mechanisms:** Implement robust authentication and authorization controls, including role-based access control (RBAC), secure session management, and server-side permission verification for all protected resources.
+
+3. **Secure Sensitive Files and Directories:** Disable directory listing, restrict access to sensitive directories, remove exposed database dumps and backup files, and store confidential resources outside publicly accessible web directories.
+
+4. **Protect Patient Information:** Implement appropriate security controls for patient laboratory reports and other confidential medical records. Ensure that documents can only be accessed by authenticated and authorized users.
+
+5. **Enforce Strong Encryption and Password Policies:** Use modern encryption standards, strong randomly generated passwords, and secure password management procedures. Avoid relying exclusively on PDF password protection to safeguard confidential documents.
+
+6. **Implement Security Monitoring and Logging:** Establish centralized logging and monitoring to detect suspicious activities, unauthorized access attempts, authentication bypasses, and potential data exfiltration. Regularly review security logs.
+
+7. **Maintain Secure Systems and Applications:** Regularly update the operating system, web server, application frameworks, and third-party components. Remove unnecessary services, files, and outdated application resources to minimize the attack surface.
+
+8. **Conduct Regular Security Assessments and Awareness Training:** Perform periodic vulnerability assessments and penetration tests to identify emerging weaknesses. Provide security awareness training to employees, particularly those handling sensitive organizational and patient information.
+
+**Overall Recommendation:** The organization should prioritize remediation of the identified critical and high-severity vulnerabilities, particularly SQL injection and unauthorized exposure of sensitive information. A structured security improvement program should be established to ensure that corrective measures are implemented, verified, and continuously maintained.
+# 9. Conclusion
+
+The penetration testing assessment successfully identified and demonstrated several security vulnerabilities within the target web application. A total of four findings were documented, comprising three Critical-severity vulnerabilities and one High-severity vulnerability.
+
+The assessment revealed significant weaknesses in directory configuration, database security, authentication mechanisms, access control, and the protection of confidential information. Successful exploitation of the identified vulnerabilities resulted in the exposure of organizational database records, unauthorized access to the patient portal, and retrieval of confidential patient laboratory reports.
+
+The findings demonstrate that the application's existing security controls are insufficient to adequately protect sensitive organizational and patient information. In particular, the SQL injection vulnerability presents a serious risk because it allows authentication bypass and unauthorized access to protected application functionality.
+
+Overall, the application was assessed to have a **CRITICAL security risk level** based on the vulnerabilities identified and the demonstrated impact of exploitation.
+
+It is strongly recommended that the organization prioritizes remediation of all identified vulnerabilities, implements the security improvements outlined in this report, and conducts follow-up security testing to verify that the weaknesses have been effectively addressed.
+
+The assessment highlights the importance of continuous security monitoring, secure application development practices, proper access control implementation, and regular penetration testing in maintaining the confidentiality, integrity, and availability of organizational information systems.
